@@ -4,7 +4,10 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 
 # Intialize Geck Chrome web browser
-bot = webdriver.Chrome()
+options = webdriver.ChromeOptions()
+options.add_argument('--user-data-dir="~/.config/google-chrome/Default"')
+bot = webdriver.Chrome(chrome_options=options)
+
 
 # Loading url to browser
 bot.get('https://web.whatsapp.com/')
@@ -33,9 +36,8 @@ def send_message(to,message):
   try:
     receiver = bot.find_element_by_xpath('//span[@title = "{}"]'.format(to))
     receiver.click()
-    messageBox = bot.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div/div[2 and @contenteditable="true"]')
-    messageBox.send_keys(message)
-    messageBox.send_keys(Keys.RETURN)
+    messageBox = bot.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div[2 and @class="_13mgZ"]')
+    messageBox.send_keys(message,Keys.RETURN)
     print('Message Successfully Sent !! \n' + '-' * 50 )
 
   # if sending message failed !
@@ -52,4 +54,4 @@ while True :
   send_message(
   to = input("Enter the reciver Name : "),
   message = input("Enter the message to be sent : ")
-  )
+  ) 
